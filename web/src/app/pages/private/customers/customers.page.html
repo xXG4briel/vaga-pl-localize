@@ -1,0 +1,42 @@
+<ion-content>
+  <main id="main-container">
+    <ion-card>
+      <ion-item class="ion-no-padding" lines="none">
+        <ion-title>Clientes</ion-title>
+        <ion-button expand="block" color="dark">Cadastrar</ion-button>
+      </ion-item>
+
+      <ion-grid>
+        <ion-row class="bills-rows-container">
+          <ion-col size="6"><ion-label>Nome</ion-label></ion-col>
+          <ion-col size="1.33" class="ion-text-center"><ion-label>Pagos</ion-label></ion-col>
+          <ion-col size="1.33" class="ion-text-center"><ion-label>Abertos</ion-label></ion-col>
+          <ion-col size="1.33" class="ion-text-center"><ion-label>Atrasados</ion-label></ion-col>
+          <ion-col size="2"></ion-col>
+        </ion-row>
+        
+        <ion-list class="ion-no-padding">
+          <ion-row class="bills-rows-content" *ngFor="let customer of customers">
+            <ion-col size="6"><ion-label>{{ customer.name }}</ion-label></ion-col>
+            <ion-col size="1.33" class="ion-text-center"><ion-label><ion-chip color="success">{{ customer.paids }}</ion-chip></ion-label></ion-col>
+            <ion-col size="1.33" class="ion-text-center"><ion-label><ion-chip>{{ customer.opens }}</ion-chip></ion-label></ion-col>
+            <ion-col size="1.33" class="ion-text-center"><ion-label><ion-chip color="danger">{{ customer.overdues }}</ion-chip></ion-label></ion-col>
+            <ion-col>
+              <ion-item lines="none">
+                <ion-button>
+                  <ion-icon name="pencil"></ion-icon>
+                </ion-button>
+                <ion-button color="danger">
+                  <ion-icon name="trash"></ion-icon>
+                </ion-button>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-list>
+
+        
+      </ion-grid>
+    </ion-card>
+
+  </main>
+</ion-content>
