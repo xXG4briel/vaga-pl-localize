@@ -43,4 +43,15 @@ ion-content {
         }
 
     }
+    form {
+        max-width: 400px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    ion-list {
+        max-height: 38vh;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
 }

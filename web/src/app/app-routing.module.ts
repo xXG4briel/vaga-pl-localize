@@ -16,11 +16,19 @@ const routes: Routes = [
     loadChildren: () => import('./pages/public/auth/register/register.module').then( m => m.RegisterPageModule)
   },
   {
-    path: 'bills',
+    path: 'bills/:customerId',
+    loadChildren: () => import('./pages/private/bills/bills.module').then( m => m.BillsPageModule)
+  },
+  {
+    path: 'bills/:customerId/:id',
     loadChildren: () => import('./pages/private/bills/bills.module').then( m => m.BillsPageModule)
   },
   {
     path: 'customers',
+    loadChildren: () => import('./pages/private/customers/customers.module').then( m => m.CustomersPageModule)
+  },
+  {
+    path: 'customers/:id',
     loadChildren: () => import('./pages/private/customers/customers.module').then( m => m.CustomersPageModule)
   },
 ];

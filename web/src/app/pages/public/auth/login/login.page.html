@@ -1,17 +1,17 @@
 <ion-content>
   <main id="auth-container">
-    <form>
+    <form [formGroup]="form" (ngSubmit)="signin()">
       <ion-card class="ion-padding">
         <ion-card-header>
           <ion-card-title class="ion-text-center">Login</ion-card-title>
         </ion-card-header>
     
         <ion-card-content class="ion-no-padding">
-          <ion-input class="ion-margin-bottom" label="E-mail" label-placement="floating" fill="outline" type="email"></ion-input>
-          <ion-input class="ion-margin-bottom" label="Senha" label-placement="floating" fill="outline" type="password"></ion-input>
+          <ion-input class="ion-margin-bottom" label="E-mail" label-placement="floating" fill="outline" type="email" formControlName="email"></ion-input>
+          <ion-input class="ion-margin-bottom" label="Senha" label-placement="floating" fill="outline" type="password" formControlName="password"></ion-input>
         </ion-card-content>
     
-        <ion-button fill="solid" expand="block" color="dark">Entrar</ion-button>
+        <ion-button fill="solid" expand="block" color="dark" type="submit">Entrar</ion-button>
   
         <ion-item class="ion-no-padding ion-text-center" lines="none" button [routerLink]="['/register']">
           <ion-label>Clique aqui para criar uma conta.</ion-label>

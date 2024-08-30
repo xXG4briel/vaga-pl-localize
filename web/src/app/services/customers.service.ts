@@ -26,8 +26,12 @@ export class CustomersService implements IBaseService {
     const url = `${base_url}/customers/${id}`;
     return this.dataService.put<UpdateCustomers>(url, data);
   }
-  find<GetCustomers>(): Observable<GetCustomers> {
-    const url = `${base_url}/customers`;
+  find<GetCustomers>(id: string): Observable<GetCustomers> {
+    const url = `${base_url}/customers/${id}`;
     return this.dataService.get<GetCustomers>(url);
+  }
+  remove(id: string) {
+    const url = `${base_url}/customers/${id}`;
+    return this.dataService.delete(url);
   }
 }
