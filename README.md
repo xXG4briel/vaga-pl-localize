@@ -65,6 +65,7 @@ dotnet run
 - [x] listar as faturas cadastradas
 - [x] editar uma fatura
 - [x] deletar uma fatura
+- [x] projeto dockerizado
 ```
 
 - Não funcionais
@@ -75,4 +76,5 @@ dotnet run
 - [x] logs
 - [x] documentação
 - [x] testes unitários e outros
+- [x] paginação dos registros
 ```
