@@ -29,6 +29,9 @@ Opção 1:
 docker-compose up
 ou
 docker compose up -d
+
+Acessar http://localhost:4200
+
 ```
 
 ---

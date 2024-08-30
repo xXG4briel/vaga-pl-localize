@@ -6,6 +6,5 @@ COPY package*.json ./
 COPY . .
 
 RUN npm install
-RUN npm install -g @ionic/cli
 
-CMD ["ionic", "serve"]
+CMD ["npm", "run", "start", "--", "--host", "0.0.0.0"]
