@@ -5,3 +5,8 @@ services:
     build: ./web
     ports:
     - "4200:4200"
+
+  server:
+    build: ./server
+    ports:
+    - "4500:80"
