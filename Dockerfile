@@ -1,22 +1,24 @@
-# Etapa 1: Construir a aplicaÃ§Ã£o
+# Utilizar a imagem base do .NET SDK para compilar a aplicação
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
+# Define o diretório de trabalho
 WORKDIR /app
 
-# Copiar o arquivo csproj e restaurar dependÃªncias
+# Copia os arquivos de csproj e restaura as dependências
 COPY *.csproj ./
 RUN dotnet restore
 
-# Copiar o restante do cÃ³digo e construir a aplicaÃ§Ã£o
+# Copia todos os arquivos da aplicação e compila
 COPY . ./
 RUN dotnet publish -c Release -o out
 
-# Etapa 2: Criar a imagem de runtime
+# Utiliza a imagem base do ASP.NET Core para executar a aplicação
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/out .
 
-# Configurar a porta que o contÃªiner expÃµe
+# Define a porta na qual a aplicação irá rodar
 EXPOSE 80
 
-# Definir o comando para rodar a aplicaÃ§Ã£o
+# Comando para iniciar a aplicação
 ENTRYPOINT ["dotnet", "server.dll"]
