@@ -17,39 +17,42 @@ Descrição do que foi realizado para a vaga de Desenvolvedor Fullstack Pleno.
 
 ---
 
-# Requisitos
-- Docker
-- Docker-compose
-
-## Teste
-
-Opção 1:
-
-```bash
-docker-compose up
-ou
-docker compose up -d
-
-Acessar http://localhost:4200
-
-```
+## Requisitos
+- NodeJs - v22.3.0 ou superior
+- .NET - 8.0.400 ou superior
 
 ---
 
-Opção 2:
+## Execução
 
-```bash
-node -v // verifique se a sua versão é a mesma v22.3.0
-cd web
-npm install
-npm run start
-o projeto web irá rodar na porta 4200
+### server
+- clone o repositório com o visual studio 2022
+- Selecione a configuração server
+- Se ocorreu tudo certo irá abrir uma nova página no navegador na interface do swagger
 
-dotnet -v // verifique se a sua versão é a mesma v8.0.200
-cd server/server
-dotnet ef database update // cria o banco de dados
-dotnet run
-```
+### web
+- na pasta onde está o projeto executa
+- cd web
+- npm install ( você deverá ter instalado a versão v22.3.0 )
+- npm run start
+- Acesse [localhost:4200](http://localhost:4200/)
+
+---
+
+### Funcionalidades
+
+- Login/Registro + jwt
+- ![image](https://github.com/user-attachments/assets/8b79714a-7f20-4aeb-bace-fecb6c5dbb9b)
+- ![image](https://github.com/user-attachments/assets/33d4be77-5a1d-44a2-97e1-fa46fe995cb5)
+
+- Cadastro/Leitura/Remoção de clientes de clientes e todas faturas/cobranças
+- ![image](https://github.com/user-attachments/assets/b551fa6e-7878-4353-9584-1d5aefaf8ba2)
+![image](https://github.com/user-attachments/assets/8ec42f5f-68c7-47dd-a110-78bb4a6f37bf)
+
+- Cadastro/Leitura/Remoção/Edição de faturas/cobranças
+![image](https://github.com/user-attachments/assets/09b59265-cc8a-4f10-a626-f22b20fefaac)
+![image](https://github.com/user-attachments/assets/07e24223-31d3-40a2-8e42-e6cf048b0398)
+![image](https://github.com/user-attachments/assets/c40e2da5-7e89-4d57-b160-9ba49488d542)
 
 ---
 
