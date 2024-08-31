@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { AlertService } from 'src/app/services/alert.service';
 import { CustomersService } from 'src/app/services/customers.service';
+import { GetCustomers } from 'src/app/types';
 
 @Component({
   selector: 'app-customers',
@@ -15,49 +16,14 @@ export class CustomersPage implements OnInit {
 
   form: FormGroup = new FormGroup({});
   useForm = false;
-  customers = [
-    {
-      id: '1234',
-      name: 'Customer 1',
-      paids: 1,
-      opens: 1,
-      overdues: 1,
-    },
-    {
-      id: '6634',
-      name: 'Customer 1',
-      paids: 1,
-      opens: 1,
-      overdues: 1,
-    },
-    {
-      id: '53676',
-      name: 'Customer 1',
-      paids: 1,
-      opens: 1,
-      overdues: 1,
-    },
-    {
-      id: '3445',
-      name: 'Customer 1',
-      paids: 1,
-      opens: 1,
-      overdues: 1,
-    },
-    {
-      id: '5435',
-      name: 'Customer 1',
-      paids: 1,
-      opens: 1,
-      overdues: 1,
-    },
-  ];
+  customers: GetCustomers[] = [];
 
   constructor(
     private readonly activate: ActivatedRoute,
     private readonly alertService: AlertService,
     private readonly customerService: CustomersService,
     private readonly formBuilder: FormBuilder,
+    private readonly router: Router
   ) {
     this.setup();
   }
@@ -79,6 +45,10 @@ export class CustomersPage implements OnInit {
     else {
       this.getCustomers();
     }
+  }
+
+  ionViewWillEnter() {
+    this.getCustomers();
   }
 
   goBack() {
@@ -122,6 +92,7 @@ export class CustomersPage implements OnInit {
     this.customerService.index().subscribe({
       next: (res: any) => {
         loading.dismiss();
+        this.customers = res;
       },
       error: (err) => {
         this.alertService.toast('Erro ao buscar cliente');
@@ -141,6 +112,8 @@ export class CustomersPage implements OnInit {
     this.customerService.store(this.form.value).subscribe({
       next: (res: any) => {
         loading.dismiss();
+        this.alertService.toast('Cliente criado com sucesso');
+        this.router.navigateByUrl('/customers');
       },
       error: (err) => {
         this.alertService.toast('Erro ao editar cliente');
@@ -160,6 +133,8 @@ export class CustomersPage implements OnInit {
     this.customerService.update(id, this.form.value).subscribe({
       next: (res: any) => {
         loading.dismiss();
+        this.alertService.toast('Cliente editado com sucesso');
+        this.router.navigateByUrl('/customers');
       },
       error: (err) => {
         this.alertService.toast('Erro ao edutar cliente');

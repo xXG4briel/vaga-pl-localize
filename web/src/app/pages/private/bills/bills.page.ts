@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'src/app/services/alert.service';
 import { BillsService } from 'src/app/services/bills.service';
+import { GetBills } from 'src/app/types';
 
 @Component({
   selector: 'app-bills',
@@ -13,82 +14,14 @@ export class BillsPage implements OnInit {
 
   id: string = '';
   customerId: string = '';
-  bills = [
-    {
-      id: '1234',
-      description: 'Descrição',
-      value: 1,
-      dueDate: 1,
-    },
-    {
-      id: '1234',
-      description: 'Descrição',
-      value: 1,
-      dueDate: 1,
-    },
-    {
-      id: '1234',
-      description: 'Descrição',
-      value: 1,
-      dueDate: 1,
-    },
-    {
-      id: '1234',
-      description: 'Descrição',
-      value: 1,
-      dueDate: 1,
-    },
-    {
-      id: '1234',
-      description: 'Descrição',
-      value: 1,
-      dueDate: 1,
-    },
-    {
-      id: '1234',
-      description: 'Descrição',
-      value: 1,
-      dueDate: 1,
-    },
-    {
-      id: '1234',
-      description: 'Descrição',
-      value: 1,
-      dueDate: 1,
-    },
-    {
-      id: '1234',
-      description: 'Descrição',
-      value: 1,
-      dueDate: 1,
-    },
-    {
-      id: '1234',
-      description: 'Descrição',
-      value: 1,
-      dueDate: 1,
-    },
-    {
-      id: '1234',
-      description: 'Descrição',
-      value: 1,
-      dueDate: 1,
-    },
-    {
-      id: '1234',
-      description: 'Descrição',
-      value: 1,
-      dueDate: 1,
-    },
-    {
-      id: '1234',
-      description: 'Descrição',
-      value: 1,
-      dueDate: 1,
-    },
-  ];
+  bill = {};
+  bills: GetBills[] = [];
   form: FormGroup = new FormGroup({});
   useForm = false;
+  status = [
+    { label: 'Aberto', value: 'open' },
+    { label: 'Pago', value: 'paid' }
+  ]
 
   constructor(
     private readonly activate: ActivatedRoute,
@@ -103,15 +36,26 @@ export class BillsPage implements OnInit {
   ngOnInit() {
     const { id, customerId } = this.activate.snapshot.params;
     this.customerId = customerId;
-    if(id) {
+    this.id = id;
+    this.populateBill();
+  }
+
+  private populateBill() {
+    if (this.id) {
       this.useForm = true;
       this.bills = [];
-      
-      this.getBill(id);
+
+      if (!/new/.test(this.id)) {
+        this.getBill(this.id);
+      }
     }
-    else if(customerId) {
+    else if (this.customerId) {
       this.getBills();
     }
+  }
+
+  ionViewWillEnter() {
+    this.populateBill();
   }
 
   goBack() {
@@ -137,11 +81,19 @@ export class BillsPage implements OnInit {
 
     const loading = await this.alertService.loading();
 
-    this.billService.find(id).subscribe({
+    this.billService.find(id, { customerId: this.customerId }).subscribe({
       next: (res: any) => {
+        this.bill = res;
+
+        const date = new Date(res.dueDate);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const day = String(date.getDate()).padStart(2, '0');
+        const dueDate = `${year}-${month}-${day}`;
+
         this.form.patchValue({
           description: res.description,
-          dueDate: res.dueDate,
+          dueDate,
           value: res.value,
           status: res.status,
         });
@@ -161,9 +113,10 @@ export class BillsPage implements OnInit {
     this.billService.getBills(this.customerId).subscribe({
       next: (res: any) => {
         loading.dismiss();
+        this.bills = res;
       },
       error: (err) => {
-        this.alertService.toast('Erro ao buscar cliente');
+        this.alertService.toast('Erro ao buscar clientes');
         loading.dismiss();
       }
     });    
@@ -176,13 +129,15 @@ export class BillsPage implements OnInit {
     }
 
     const loading = await this.alertService.loading();
-  
-    this.billService.store(this.form.value).subscribe({
+
+    this.billService.store(this.form.value, { customerId: this.customerId }).subscribe({
       next: (res: any) => {
         loading.dismiss();
+        this.alertService.toast('Cobrança criada com sucesso');
+        this.router.navigateByUrl(`/bills/${this.customerId}`);
       },
       error: (err) => {
-        this.alertService.toast('Erro ao edutar cliente');
+        this.alertService.toast('Erro ao criar cobrança');
         loading.dismiss();
       }
     });
@@ -196,12 +151,14 @@ export class BillsPage implements OnInit {
 
     const loading = await this.alertService.loading();
   
-    this.billService.update(id, this.form.value).subscribe({
+    this.billService.update(id, this.form.value, { customerId: this.customerId }).subscribe({
       next: (res: any) => {
         loading.dismiss();
+        this.alertService.toast('Cobrança editada com sucesso');
+        this.router.navigateByUrl(`/bills/${this.customerId}`);
       },
       error: (err) => {
-        this.alertService.toast('Erro ao edutar cliente');
+        this.alertService.toast(`Erro ao editar cobrança\n${err.error}`);
         loading.dismiss();
       }
     });
@@ -214,9 +171,9 @@ export class BillsPage implements OnInit {
   async delete(id: string) {
     const loading = await this.alertService.loading();
 
-    this.billService.remove(id).subscribe(
+    this.billService.remove(id, { customerId: this.customerId }).subscribe(
       (res) => {
-        this.alertService.toast('Cliente excluido com sucesso');
+        this.alertService.toast('Cobrança excluido com sucesso');
         loading.dismiss();
         this.getBills();
       },
@@ -228,7 +185,7 @@ export class BillsPage implements OnInit {
   }
 
   async submit() {
-    if(this.id) {
+    if(!/new/.test(this.id)) {
       this.editBill(this.id);
     }
     else {

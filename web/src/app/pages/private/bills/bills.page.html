@@ -9,17 +9,19 @@
 
       <ion-grid>
         <ion-row class="bills-rows-container">
-          <ion-col size="6"><ion-label>Descrição</ion-label></ion-col>
+          <ion-col size="4"><ion-label>Descrição</ion-label></ion-col>
+          <ion-col size="2"><ion-label>Status</ion-label></ion-col>
           <ion-col size="2" class="ion-text-center"><ion-label>Valor</ion-label></ion-col>
           <ion-col size="2" class="ion-text-center"><ion-label>Vencimento</ion-label></ion-col>
           <ion-col size="2"></ion-col>
         </ion-row>
         
-        <ion-list class="ion-no-padding">
+        <ion-list class="ion-no-padding" *ngIf="bills.length > 0">
           <ion-row class="bills-rows-content" *ngFor="let bill of bills">
-            <ion-col size="6"><ion-label>{{ bill.description }}</ion-label></ion-col>
+            <ion-col size="4"><ion-label>{{ bill.description }}</ion-label></ion-col>
+            <ion-col size="2"><ion-label>{{ bill.status == 'paid' ? 'Pago' : 'Aberto' }}</ion-label></ion-col>
             <ion-col size="2" class="ion-text-center"><ion-label>{{ bill.value }}</ion-label></ion-col>
-            <ion-col size="2" class="ion-text-center"><ion-label>{{ bill.dueDate }}</ion-label></ion-col>
+            <ion-col size="2" class="ion-text-center"><ion-label>{{ bill.dueDate | date:'dd/MM/yyyy' }}</ion-label></ion-col>
             <ion-col>
               <ion-item lines="none">
                 <ion-button (click)="goToBill(bill.id)">
@@ -48,11 +50,13 @@
             <ion-input class="ion-margin-bottom" label="Descrição" label-placement="floating" fill="outline" type="text"  formControlName="description"></ion-input>
             <ion-input class="ion-margin-bottom" label="Data de Vencimento" label-placement="floating" fill="outline" type="date"  formControlName="dueDate"></ion-input>
             <ion-input class="ion-margin-bottom" label="Valor" label-placement="floating" fill="outline" type="number"  formControlName="value"></ion-input>
-            <ion-input class="ion-margin-bottom" label="Status" label-placement="floating" fill="outline" type="text" [disabled]="true" style="pointer-events: none; opacity: .5;" formControlName="status"></ion-input>
+            <ion-select class="ion-margin-bottom" label="Status" label-placement="floating" fill="outline" type="text" formControlName="status">
+              <ion-select-option *ngFor="let s of status" [value]="s.value">{{ s.label }}</ion-select-option>
+            </ion-select>
           </ion-card-content>
           
           <ion-item class="ion-no-padding" lines="none">
-            <ion-button size="lg" fill="solid" color="dark" type="submit">{{ id ? 'Editar' : 'Criar' }}</ion-button>
+            <ion-button size="lg" fill="solid" color="dark" type="submit">{{ id && id != 'new' ? 'Editar' : 'Criar' }}</ion-button>
             <ion-button size="lg" fill="solid" (click)="cancel()">Cancelar</ion-button>
           </ion-item>
         </ion-card>

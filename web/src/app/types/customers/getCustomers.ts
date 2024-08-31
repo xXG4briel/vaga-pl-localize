@@ -3,5 +3,5 @@ export interface GetCustomers {
     name: string
     open: number;
     paid: number;
-    overdue: number;    
+    overdue: number;
 }

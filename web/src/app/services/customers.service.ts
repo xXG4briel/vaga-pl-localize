@@ -18,7 +18,7 @@ export class CustomersService implements IBaseService {
     const url = `${base_url}/customers`;
     return this.dataService.getList<GetCustomers>(url);
   }
-  store<StoreCustomers>(data: StoreCustomers): Observable<StoreCustomers> {
+  store<StoreCustomers>(data: StoreCustomers, params?: any): Observable<StoreCustomers> {
     const url = `${base_url}/customers`;
     return this.dataService.post<StoreCustomers>(url, data);
   }
