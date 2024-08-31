@@ -1,0 +1,22 @@
+# .NET Core
+bin/
+obj/
+out/
+*.exe
+*.dll
+*.pdb
+*.cache
+*.vs/
+*.vscode/
+*.user
+*.suo
+*.swp
+*.tmp
+*.log
+
+# NuGet
+*.nupkg
+*.snupkg
+*.nuspec
+*.nupkg
+*.nuget/
